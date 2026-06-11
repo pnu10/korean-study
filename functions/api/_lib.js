@@ -70,7 +70,7 @@ function studyPrompt(payload) {
   const user = hasImg
     ? `Read the attached image(s) and build a Korean study set for an English speaker.${text ? `\n\nExtra notes:\n${text}` : ''}`
     : `Build a Korean study set for an English speaker from this:\n\n${text}`;
-  return { system, user, max_tokens: 4096 };
+  return { system, user, max_tokens: 8000 };
 }
 
 function vocabPrompt(payload) {
