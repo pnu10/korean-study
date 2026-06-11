@@ -8,10 +8,22 @@ const KEY = {
   wrong: 'es.wrong',        // [{ id, question, your, answer, explain, date }]
   cards: 'es.cards',        // { cardKey: { status: 'know'|'meh'|'no', front, back, example, date } }
   usage: 'es.usage',        // { date: 'YYYY-MM-DD', count }
+  imgUsage: 'es.imgUsage',  // { date: 'YYYY-MM-DD', count }
 };
 
 /* daily limit for generating study sets */
 const DAILY_LIMIT = 5;
+const IMG_DAILY_LIMIT = 2;
+function imgQuotaToday() {
+  const u = load(KEY.imgUsage, { date: '', count: 0 });
+  return u.date === todayStr() ? u : { date: todayStr(), count: 0 };
+}
+const imgQuotaLeft = () => Math.max(0, IMG_DAILY_LIMIT - imgQuotaToday().count);
+function bumpImgQuota() {
+  const u = imgQuotaToday();
+  u.count += 1;
+  save(KEY.imgUsage, u);
+}
 function quotaToday() {
   const u = load(KEY.usage, { date: '', count: 0 });
   return u.date === todayStr() ? u : { date: todayStr(), count: 0 };
@@ -307,6 +319,7 @@ views.home = (root) => {
     const text = $('#paste', root).value.trim();
     if (text.length < 4 && photos.length === 0) { toast('Paste some text or add a photo first.'); return; }
     const withImg = photos.length > 0;
+    if (withImg && imgQuotaLeft() <= 0) { toast(`Image uploads are limited to ${IMG_DAILY_LIMIT} per day.`); return; }
     loading(
       withImg ? 'Reading your photos and building a study set…' : 'Building your study set…',
       withImg
@@ -319,6 +332,7 @@ views.home = (root) => {
       loading.finish?.();
       await new Promise(r => setTimeout(r, 400));
       bumpQuota();
+      if (withImg) bumpImgQuota();
       const set = { id: uid(), title: data.title || 'Study set', date: new Date().toISOString(), data };
       go('result', { set, fresh: true });
     } catch (e) {
