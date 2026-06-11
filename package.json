@@ -1,0 +1,15 @@
+{
+  "name": "english-study",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Paste-to-study English helper — summaries, examples, quizzes, flashcards (static + Claude API via Cloudflare Pages Functions).",
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.mjs",
+    "dev:wrangler": "wrangler pages dev public --compatibility-date=2024-01-01",
+    "deploy": "wrangler pages deploy public"
+  },
+  "devDependencies": {
+    "wrangler": "^3"
+  }
+}
