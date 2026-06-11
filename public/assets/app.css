@@ -357,10 +357,19 @@ body {
 .kw-chip__w { font-size: 13px; font-weight: 700; color: var(--ink); }
 .kw-chip__sep { font-size: 11px; color: var(--ink-3); }
 .kw-chip__m { font-size: 12px; color: var(--ink-2); }
+.kw-chip__plus {
+  font-size: 13px; font-weight: 700; color: var(--ink-3);
+  margin-left: 2px; line-height: 1;
+}
+.kw-chip.is-active .kw-chip__plus { color: var(--blue); }
 .kw-chip--gr { background: #FFF4E0; }
 .kw-chip--gr .kw-chip__w { color: #92400E; }
 .kw-chip--gr .kw-chip__m { color: #92400E; opacity: 0.75; }
-.ex__chips-hint { font-size: 11px; color: var(--ink-3); margin-top: 2px; font-style: italic; }
+.ex__chips-hint {
+  font-size: 12px; color: var(--blue); font-weight: 600;
+  margin-top: 4px; display: flex; align-items: center; gap: 4px;
+}
+.ex__chips-hint::before { content: "👆"; font-size: 13px; }
 .kw-chip.is-active { background: var(--blue-weak); }
 .kw-chip.is-active .kw-chip__w { color: var(--blue-press); }
 .kw-chip.is-active .kw-chip__sep,

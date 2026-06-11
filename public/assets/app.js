@@ -459,7 +459,7 @@ function kwChipRow(label, chips, type) {
         const word = type === 'grammar' ? c.pattern : c.word;
         const meaning = c.meaning;
         const detail = esc(JSON.stringify(c));
-        return `<button class="kw-chip${type === 'grammar' ? ' kw-chip--gr' : ''}" data-kwdetail='${detail}'><span class="kw-chip__w">${esc(word)}</span><span class="kw-chip__sep">·</span><span class="kw-chip__m">${esc(meaning)}</span></button>`;
+        return `<button class="kw-chip${type === 'grammar' ? ' kw-chip--gr' : ''}" data-kwdetail='${detail}'><span class="kw-chip__w">${esc(word)}</span><span class="kw-chip__sep">·</span><span class="kw-chip__m">${esc(meaning)}</span><span class="kw-chip__plus">+</span></button>`;
       }).join('')}
     </div>
   </div>`;
