@@ -542,13 +542,16 @@ body {
 .spacer-sm { height: 8px; }
 
 /* Loading */
-.loader { display: flex; flex-direction: column; align-items: center; padding: 60px 0; gap: 16px; }
-.spinner {
-  width: 38px; height: 38px; border: 4px solid var(--blue-weak);
-  border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite;
+.loader { display: flex; flex-direction: column; align-items: center; padding: 80px 20px 0; gap: 14px; }
+.loader p { color: var(--ink-2); font-size: 15px; font-weight: 700; text-align: center; }
+.ld-bar-wrap {
+  width: 100%; background: var(--line); border-radius: 999px; height: 8px; overflow: hidden;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loader p { color: var(--ink-2); font-size: 14px; font-weight: 600; }
+.ld-bar {
+  height: 100%; width: 0%; background: var(--blue);
+  border-radius: 999px; transition: width 0.08s linear;
+}
+.ld-sub { font-size: 12px; color: var(--ink-3); font-weight: 500; margin-top: -4px; }
 
 /* Quick links on home — Toss-style grouped menu list */
 .menu-card {

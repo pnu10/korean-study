@@ -316,6 +316,8 @@ views.home = (root) => {
     try {
       const images = photos.map((p) => ({ media_type: p.media_type, data: p.data }));
       const data = await generate('study', { text, images });
+      loading.finish?.();
+      await new Promise(r => setTimeout(r, 400));
       bumpQuota();
       const set = { id: uid(), title: data.title || 'Study set', date: new Date().toISOString(), data };
       go('result', { set, fresh: true });
@@ -327,13 +329,51 @@ views.home = (root) => {
 };
 
 function loading(title, steps = []) {
-  screen.innerHTML = `<div class="loader"><div class="spinner"></div><p id="ldTxt">${esc(title)}</p></div>`;
+  screen.innerHTML = `
+    <div class="loader">
+      <p id="ldTxt">${esc(steps[0] || title)}</p>
+      <div class="ld-bar-wrap"><div class="ld-bar" id="ldBar"></div></div>
+      <p class="ld-sub" id="ldSub">This usually takes 30–60 seconds</p>
+    </div>`;
+
+  // Fake progress: fast at first, slows near the end
+  let pct = 0;
+  const bar = $('#ldBar');
+  clearInterval(loading._t);
+  clearInterval(loading._p);
+
+  // Step text rotation
   if (steps.length) {
-    let i = 0;
+    let si = 0;
     const el = $('#ldTxt');
-    clearInterval(loading._t);
-    loading._t = setInterval(() => { if (el) el.textContent = steps[i++ % steps.length] + '…'; }, 1400);
+    loading._t = setInterval(() => { if (el) el.textContent = steps[si++ % steps.length] + '…'; }, 2000);
   }
+
+  // Progress bar animation: fills to ~90% over ~50s, then stalls waiting for response
+  const schedule = [
+    { target: 15, duration: 3000 },
+    { target: 35, duration: 6000 },
+    { target: 55, duration: 8000 },
+    { target: 72, duration: 10000 },
+    { target: 85, duration: 12000 },
+    { target: 91, duration: 15000 },
+  ];
+  let phase = 0;
+  const tick = () => {
+    if (!bar) return;
+    const ph = schedule[phase];
+    if (!ph) return;
+    const step = (ph.target - pct) / (ph.duration / 80);
+    pct = Math.min(pct + step, ph.target);
+    bar.style.width = pct + '%';
+    if (pct >= ph.target) { phase++; if (phase < schedule.length) setTimeout(tick, 200); }
+  };
+  loading._p = setInterval(tick, 80);
+  loading.finish = () => {
+    clearInterval(loading._t);
+    clearInterval(loading._p);
+    if (bar) { bar.style.transition = 'width 0.4s ease'; bar.style.width = '100%'; }
+  };
 }
 
 /* ================================================================
