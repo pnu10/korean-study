@@ -47,7 +47,7 @@ function studyPrompt(payload) {
     { "word": string, "roman": string, "similar": string, "similarRoman": string, "nuance": string }
   ],
   "tips": [string, string, string],       // "Good to know" — grammar, formal/casual, mix-ups, culture. In English, 3+
-  "quiz": [                               // EXACTLY 10. Mix types evenly. DO NOT force the learner to type Korean.
+  "quiz": [                               // EXACTLY 5. Mix types evenly. DO NOT force the learner to type Korean.
     {
       "type": "choice" | "ko2en" | "en2ko" | "fill",
       "question": string,
@@ -56,7 +56,7 @@ function studyPrompt(payload) {
       "explain": string
     }
   ],
-  "flashcards": [                         // EXACTLY 10
+  "flashcards": [                         // EXACTLY 5
     {
       "front": string, "roman": string, "back": string,
       "pos": string,                      // part of speech in English (Verb / Noun / Adjective / Expression / Adverb)
